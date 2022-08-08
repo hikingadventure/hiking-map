@@ -124,7 +124,7 @@ df_table["Availability"] = availability
 
 
 
-print(df_table)
+#print(df_table)
 
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.CERULEAN])
@@ -309,7 +309,7 @@ def display_click_data(clickData):
 
 
 
-
-app.run_server()  # Turn off reloader if inside Jupyter
+if __name__ == '__main__':
+    app.run_server()  # Turn off reloader if inside Jupyter
 
 

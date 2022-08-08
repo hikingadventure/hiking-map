@@ -310,6 +310,6 @@ def display_click_data(clickData):
 
 
 
-app.run_server(debug=True, use_reloader=False, port=8050)  # Turn off reloader if inside Jupyter
+app.run_server()  # Turn off reloader if inside Jupyter
 
 

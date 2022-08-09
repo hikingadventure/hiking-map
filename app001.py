@@ -143,7 +143,6 @@ app.layout = html.Div([
         dbc.Row([ 
                 
             html.Div([
-                html.H1("UPCOMING HIKES"),
                 dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True}),
                 #html.P("Explanation: Move the mouse over a colored point on the map for information about date and availability. \
                 #    The detailed tour program can be found here:", 

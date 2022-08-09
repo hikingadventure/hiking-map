@@ -143,6 +143,7 @@ app.layout = html.Div([
         dbc.Row([ 
                 
             html.Div([
+                html.H1(UPCOMING HIKES)
                 dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True}),
                 #html.P("Explanation: Move the mouse over a colored point on the map for information about date and availability. \
                 #    The detailed tour program can be found here:", 
@@ -290,7 +291,8 @@ def update_figure(chosen_lenght):
 def display_click_data(clickData):
 
     if clickData is None:
-        return 'Tour program, linked'
+        #return 'Tour program, linked'
+        return
     else:
         # print (clickData)
         the_link = clickData['points'][0]['customdata']

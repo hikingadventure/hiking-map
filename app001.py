@@ -177,7 +177,7 @@ app.layout = html.Div([
         dbc.Row([ 
                 
             html.Div([
-                html.P("Explanation: Move the mouse over the red bubbles for information about date, difficulty and availability. A click on the bubble will display the link to the detailed tour information below:", 
+                html.P("Explanation: Move the mouse over the red bubbles for information about date, difficulty and availability. A click on the bubble will display the link to the detailed tour information below.", 
                     #style={'textAlign': 'center', "backgroundColor":'#E4FFC9', "font-family": "Arial"}
                     )
             ], style={'color': '#7C7672', 'fontSize': 14, "backgroundColor":'#E4FFC9', 'padding-left':'40px'})      
@@ -304,7 +304,8 @@ def display_click_data(clickData):
             #for i in df_table['Tour']:
             #    a = i
                         
-            return html.A(dbc.Button("Link to hike: "+button_name, color="success"), href=the_link, target="_blank")
+            return html.A(dbc.Button("Link to hike: "+ '"'+ button_name + '"', color="success", style={"font-family": "Arial"}
+            ), href=the_link, target="_blank")
 
 
 

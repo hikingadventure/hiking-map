@@ -7,6 +7,7 @@ from dash.dependencies import Input, Output
 
 import dash_bootstrap_components as dbc
 
+import plotly.offline as py     #(version 4.4.1)
 import plotly.graph_objs as go
 
 import plotly.express as px
@@ -28,7 +29,10 @@ for i in range(len(response_list)):
   list_id_numbers.append(response_list[i]["id"])
   tour_name.append(response_list[i]["title"]["rendered"])
 
+
 #loop over a database and get data needed
+
+#list_tours = [340, 1034, 341, 1137]
 
 list_max_number_of_people = []
 list_booked = []
@@ -42,6 +46,7 @@ list_difficulty = []
 for i in list_id_numbers:
   
   output_dict = [x for x in response_list if x['id'] == i]
+  #tour_name.append(i)
   max_number_of_people = [sub['anzahl_teilnehmende'] for sub in output_dict ]
   list_max_number_of_people.append(max_number_of_people)
   booked = [sub['buchungen'] for sub in output_dict ]
@@ -101,7 +106,13 @@ for i in range(len(df_table["date_one_day"])):
     list_tour_lenght.append("One day")
 
 df_table["Tour_Length"] = list_tour_lenght
-df_table["color"] = ["blue", "green", "red", "orange"]
+
+
+list_color_map =[]
+for i in range(len(response_list)):
+    list_color_map.append("red")
+
+df_table["color"] = list_color_map
 
 
 #df_table["Date"] =  pd.to_datetime(df_table["Date"])
@@ -122,18 +133,15 @@ df_table["Availability"] = availability
 
 
 
-#print(df_table)
-
-#external_stylesheets=[dbc.themes.CERULEAN]
+print(df_table)
 
 app = dash.Dash(__name__)
-server = app.server
+
 
 blackbold={'color':'black', 'font-weight': 'bold', "font-family":"New Panam Skyline"}
 
 background_color = '#E4FFC9'
 #style={"font-family": "Burnest Rough Regular"}
-
 
 app.layout = html.Div([
     dbc.Row([
@@ -188,11 +196,10 @@ app.layout = html.Div([
 
 
 
-
-
 # Output of Graph
 @app.callback(Output('graph', 'figure'),
               [Input('tour_lenght_name', 'value')
+
               ])
 
 def update_figure(chosen_lenght):
@@ -243,7 +250,7 @@ def update_figure(chosen_lenght):
             #title=dict(text="UPCOMING HIKES",font=dict(family="Burnest Rough Regular",size=35, color='#7C7672')),
             mapbox_style="open-street-map",
             width=1430, 
-            height=500,
+            height=600,
             mapbox=dict(
             center=go.layout.mapbox.Center(lat=47, lon=9),
             zoom=8),
@@ -282,12 +289,8 @@ def display_click_data(clickData):
             #for i in df_table['Tour']:
             #    a = i
                         
-            #return html.A(dbc.Button("Link to hike: "+ '"'+ button_name + '"', color="success", style={"font-family": "Arial", "font-size": 12}
-            #), href=the_link, target="_blank")
-            return html.A(dbc.Button(button_name, style={"color":"#7C7672", "backgroundColor":'red', 'fontSize': "1.725em"}
-            ), href=the_link, target="_blank")
-
-
+            return html.A(dbc.Button(button_name, style={"color":"#7C7672", "backgroundColor":'red', 'fontSize': "1.725em"}), 
+                href=the_link, target="_blank")
 
 
 

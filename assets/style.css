@@ -54,4 +54,5 @@ button.btn.btn-primary {
  font-family:"Magra", Verdana, Arial, sans-serif !important;
     font-size: 1.25em !important;
     border:none !important;
+    padding: 10px 25px 10px 25px;
 }

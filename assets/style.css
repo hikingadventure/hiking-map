@@ -44,8 +44,8 @@ h1,h2,h3,h4,h5 {
 }
 
 div.js-plotly-plot {
-    margin-left:-20px
+    margin-left:-20px !important;
 }
 div.col {
-    margin-left:-20px
+    margin-left:-20px !important;
 }

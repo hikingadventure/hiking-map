@@ -262,7 +262,7 @@ def update_figure(chosen_lenght):
             plot_bgcolor=background_color,
             paper_bgcolor=background_color,
             hoverdistance=2,
-            title=dict(text="UPCOMING HIKES",font=dict(family="Burnest Rough Regular",size=35, color='#7C7672')),
+            #title=dict(text="UPCOMING HIKES",font=dict(family="Burnest Rough Regular",size=35, color='#7C7672')),
             mapbox_style="open-street-map",
             width=800, 
             height=500,
@@ -304,7 +304,9 @@ def display_click_data(clickData):
             #for i in df_table['Tour']:
             #    a = i
                         
-            return html.A(dbc.Button("Link to hike: "+ '"'+ button_name + '"', color="success", style={"font-family": "Arial", "font-size": 12}
+            #return html.A(dbc.Button("Link to hike: "+ '"'+ button_name + '"', color="success", style={"font-family": "Arial", "font-size": 12}
+            #), href=the_link, target="_blank")
+            return html.A(dbc.Button(button_name, color="danger", style={"font-family": "Arial", "font-size": 12}
             ), href=the_link, target="_blank")
 
 

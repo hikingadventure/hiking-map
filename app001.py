@@ -264,7 +264,7 @@ def update_figure(chosen_lenght):
             hoverdistance=2,
             #title=dict(text="UPCOMING HIKES",font=dict(family="Burnest Rough Regular",size=35, color='#7C7672')),
             mapbox_style="open-street-map",
-            width=800, 
+            width=1000, 
             height=500,
             mapbox=dict(
             center=go.layout.mapbox.Center(lat=47, lon=9),

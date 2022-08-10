@@ -123,10 +123,10 @@ df_table["Date"] = df_table["Date"].str.replace(".","")
 availability = []
 for i in range(len(df_table)):
   if df_table["Booked"][i] == df_table["max_num_people"][i]:
-    availability.append("fully booked")
+    availability.append("ausgebucht")
     #print("fully booked")
   else:
-    availability.append("places available")
+    availability.append("plätze verfügbar")
     #print("places available")
 
 df_table["Availability"] = availability
@@ -175,7 +175,7 @@ app.layout = html.Div([
 
                         style={'color': '#7C7672', "backgroundColor":'#E4FFC9', "font-family": "Arial", 'padding-bottom':'20px'}
                         ),
-                html.P("Explanation: Move the mouse over the red bubbles for information about date, difficulty and availability. A click on the bubble will display the link to the detailed tour information below:", 
+                html.P("Erklärung: Informationen zu Datum, Schwierigkeit und Verfügbarkeit erhalten Sie, wenn Sie mit der Maus über die roten Punkte fahren. Beim Klick auf einen Punkt erscheint der Link zum Detailprogramm hier unten.", 
                     style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}
                     ),
                 html.Pre(id='web_link', children=[],

@@ -49,7 +49,7 @@ div.js-plotly-plot {
 div.col {
     margin-left:-20px !important;
 }
-button.btn btn-primary {
+button.btn.btn-primary {
     color:#fff !important;
  font-family:"Magra", Verdana, Arial, sans-serif !important;
     font-size: 1.25em !important;

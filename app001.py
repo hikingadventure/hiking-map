@@ -16,14 +16,20 @@ import base64
 import json
 
 #connecting to WordPress database
-api_url = 'https://wander-erlebnis.ch/staging/wp-json/wp/v2/programm' 
+api_url = 'https://wander-erlebnis.ch/wp-json/wp/v2/programm' 
 response = requests.get(api_url, 'lxml')
 response_list = json.loads(response.text)
 
+
+#getting all tour ID's
+list_id_numbers = []
+tour_name = []
+for i in range(len(response_list)):
+  list_id_numbers.append(response_list[i]["id"])
+  tour_name.append(response_list[i]["title"]["rendered"])
+
 #loop over a database and get data needed
 
-list_tours = [340, 1034, 341, 1137]
-tour_name = []
 list_max_number_of_people = []
 list_booked = []
 list_date_oneday = []
@@ -33,10 +39,9 @@ list_long = []
 list_link = []
 list_difficulty = []
 
-for i in list_tours:
+for i in list_id_numbers:
   
   output_dict = [x for x in response_list if x['id'] == i]
-  tour_name.append(i)
   max_number_of_people = [sub['anzahl_teilnehmende'] for sub in output_dict ]
   list_max_number_of_people.append(max_number_of_people)
   booked = [sub['buchungen'] for sub in output_dict ]
@@ -71,13 +76,6 @@ df_table["laengengrad"] = list_long
 df_table["link"] = list_link
 df_table["difficulty"] = list_difficulty
 
-
-corrected_values = {340:"Vom Rheintal über die Kreuzberge ins Appenzellerland",
-                    1034:"Hirzli-Planggenstock",
-                    341:"Hoch über dem Urner Haupttal",
-                    1137:"Mostelberg-Einsiedeln"}
-
-df_table['Tour'] = df_table['Tour'].map(corrected_values)
 
 #get rid of lists in columns
 df_table["date_one_day"] = df_table.apply(lambda x: pd.Series(x['date_one_day']),axis=1).stack().reset_index(level=1, drop=True)
@@ -130,12 +128,6 @@ df_table["Availability"] = availability
 
 app = dash.Dash(__name__)
 server = app.server
-
-blackbold={'color':'black', 'font-weight': 'bold', "font-family":"New Panam Skyline"}
-
-background_color = '#E4FFC9'
-#style={"font-family": "Burnest Rough Regular"}
-
 
 app.layout = html.Div([
     dbc.Row([

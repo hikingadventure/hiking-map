@@ -126,8 +126,9 @@ df_table["Availability"] = availability
 
 #print(df_table)
 
+#external_stylesheets=[dbc.themes.CERULEAN]
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.CERULEAN])
+app = dash.Dash(__name__)
 server = app.server
 
 blackbold={'color':'black', 'font-weight': 'bold', "font-family":"New Panam Skyline"}
@@ -135,29 +136,22 @@ blackbold={'color':'black', 'font-weight': 'bold', "font-family":"New Panam Skyl
 background_color = '#E4FFC9'
 #style={"font-family": "Burnest Rough Regular"}
 
+
 app.layout = html.Div([
     dbc.Row([
-    dcc.Loading(
 
     dbc.Col(children=[
             
         dbc.Row([ 
                 
             html.Div([
-                dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True}),
-                #html.P("Explanation: Move the mouse over a colored point on the map for information about date and availability. \
-                #    The detailed tour program can be found here:", 
-                #    style={'textAlign': 'center', "backgroundColor":'#E4FFC9', "font-family": "Burnest Rough Regular"}),
-                #html.Pre(id='web_link', children=[],
-                #    #style={'padding-bottom':'20px','padding-left':'2px','height':'100vh'}
-                #    )
+                dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True})
 
             ])      
 
         ])
 
     ])
-    )
 
 ]),
     dbc.Row([
@@ -166,50 +160,35 @@ app.layout = html.Div([
         dbc.Row([
 
             html.Div([
-                html.Label(children=['Please select. '], style={"backgroundColor":'#E4FFC9', "font-family": "Arial", "font-size": 12}),
-                dbc.Checklist(id='tour_lenght_name',
+                html.Label(children=['Please select. '], style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}),
+                dcc.Checklist(id='tour_lenght_name',
                         options=[{'label':str(b),'value':b} for b in sorted(df_table['Tour_Length'].unique())],
                         value=[b for b in sorted(df_table['Tour_Length'].unique())],
-                        style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'padding-bottom':'20px'}
-                        )
-            ],style={'color': '#7C7672', 'fontSize': 16, "backgroundColor":'#E4FFC9', 'padding-left':'40px'})   
+                        #label_checked_style={"color": "red"},
+                        className='my_box_container',
 
-        ]),
-        
-        dbc.Row([ 
-                
-            html.Div([
-                html.P("Explanation: Move the mouse over the red bubbles for information about date, difficulty and availability. A click on the bubble will display the link to the detailed tour information below.", 
-                    #style={'textAlign': 'center', "backgroundColor":'#E4FFC9', "font-family": "Arial"}
-                    )
-            ], style={'color': '#7C7672', 'fontSize': 12, "backgroundColor":'#E4FFC9', 'padding-left':'40px'})      
-
-        ])
-
-    ], lg=7)
-
-]),
-    dbc.Row([
-
-    dbc.Col(children=[
-
-        dbc.Row([ 
-                
-            html.Div([
+                        style={'color': '#7C7672', "backgroundColor":'#E4FFC9', "font-family": "Arial", 'padding-bottom':'20px'}
+                        ),
+                html.P("Explanation: Move the mouse over the red bubbles for information about date, difficulty and availability. A click on the bubble will display the link to the detailed tour information below:", 
+                    style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}
+                    ),
                 html.Pre(id='web_link', children=[],
                     #'height':'100vh'
-                    style={'padding-bottom':'20px','padding-left':'30px', "backgroundColor":'#E4FFC9'}
+                    #style={'padding-bottom':'20px','padding-left':'20px', "backgroundColor":'#E4FFC9'}
                     )
-            ])      
+            ],
+            style={'color': '#7C7672', 'fontSize': 14, "backgroundColor":'#E4FFC9', 'padding-left':'40px'}
+            )   
 
-        ])
+        ]),
 
-    ], lg=7)
-
-]),
-
+    ])
 
 ])
+
+])
+
+
 
 
 
@@ -266,16 +245,16 @@ def update_figure(chosen_lenght):
             hoverdistance=2,
             #title=dict(text="UPCOMING HIKES",font=dict(family="Burnest Rough Regular",size=35, color='#7C7672')),
             mapbox_style="open-street-map",
-            width=1000, 
+            width=1430, 
             height=500,
             mapbox=dict(
             center=go.layout.mapbox.Center(lat=47, lon=9),
             zoom=8),
             margin=dict(
-        l=30,
-        r=30,
-        b=30,
-        t=30,
+        l=40,
+        r=40,
+        b=40,
+        t=40,
         #pad=4
     ),
         )
@@ -308,7 +287,7 @@ def display_click_data(clickData):
                         
             #return html.A(dbc.Button("Link to hike: "+ '"'+ button_name + '"', color="success", style={"font-family": "Arial", "font-size": 12}
             #), href=the_link, target="_blank")
-            return html.A(dbc.Button(button_name, color="danger", style={"font-family": "Arial", "font-size": 12}
+            return html.A(dbc.Button(button_name, style={"color":"#7C7672", "backgroundColor":'red', 'fontSize': "1.725em"}
             ), href=the_link, target="_blank")
 
 

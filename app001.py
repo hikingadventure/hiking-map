@@ -164,7 +164,7 @@ app.layout = html.Div([
         dbc.Row([
 
             html.Div([
-                html.Label(children=['Please select. '], style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}),
+                html.Label(children=['Bitte auswählen. '], style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}),
                 dcc.Checklist(id='tour_lenght_name',
                         options=[{'label':str(b),'value':b} for b in sorted(df_table['Tour_Length'].unique())],
                         value=[b for b in sorted(df_table['Tour_Length'].unique())],
@@ -223,7 +223,7 @@ def update_figure(chosen_lenght):
         hovertemplate = "<b>%{text}</b>" + "<extra></extra>",
         marker=go.scattermapbox.Marker(
             color="red",
-            size = [20, 20, 20, 20]
+            size = 20,
             #showscale=True,
             #colorbar={'title':'Meters up', 'titleside':'top', 'thickness':4, 'ticksuffix':' m'},
         ),

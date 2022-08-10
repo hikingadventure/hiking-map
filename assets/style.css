@@ -26,9 +26,9 @@ h1,h2,h3,h4,h5 {
     color: #7C7672;
     }
     
-    p {
+    p, label {
     font-family:"Magra", Verdana, Arial, sans-serif;
-    font-size: 1.0em !important;
+    font-size: 1.25em !important;
     color: #7C7672;
     }
 

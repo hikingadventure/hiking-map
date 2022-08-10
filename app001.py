@@ -101,9 +101,9 @@ df_table["Date"] = df_table["date_one_day"] + df_table["date_several_days"]
 list_tour_lenght = []
 for i in range(len(df_table["date_one_day"])):
   if df_table["date_one_day"][i] == "":
-    list_tour_lenght.append("Several days")
+    list_tour_lenght.append("Mehrere Tage")
   else:
-    list_tour_lenght.append("One day")
+    list_tour_lenght.append("Ein Tag")
 
 df_table["Tour_Length"] = list_tour_lenght
 
@@ -114,9 +114,7 @@ for i in range(len(response_list)):
 
 df_table["color"] = list_color_map
 
-
-#df_table["Date"] =  pd.to_datetime(df_table["Date"])
-df_table["Date"] = df_table["Date"].str.replace(".","")
+#df_table["Date"] = df_table["Date"].str.replace(".","")
 
 
 #calculating fully booked/ places available

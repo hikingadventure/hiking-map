@@ -129,6 +129,12 @@ df_table["Availability"] = availability
 app = dash.Dash(__name__)
 server = app.server
 
+blackbold={'color':'black', 'font-weight': 'bold', "font-family":"New Panam Skyline"}
+
+background_color = '#E4FFC9'
+#style={"font-family": "Burnest Rough Regular"}
+
+
 app.layout = html.Div([
     dbc.Row([
 

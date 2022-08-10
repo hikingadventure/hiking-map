@@ -164,9 +164,10 @@ app.layout = html.Div([
                 dcc.Checklist(id='tour_lenght_name',
                         options=[{'label':str(b),'value':b} for b in sorted(df_table['Tour_Length'].unique())],
                         value=[b for b in sorted(df_table['Tour_Length'].unique())],
+                        #label_checked_style={"color": "red"},
                         className='my_box_container',
 
-                        style={'color': '#7C7672', "backgroundColor":'#E4FFC9', "font-family": "Arial", 'padding-bottom':'20px','fontSize': "1.725em" }
+                        style={'color': '#7C7672', "backgroundColor":'#E4FFC9', "font-family": "Arial", 'padding-bottom':'20px'}
                         ),
                 html.P("Explanation: Move the mouse over the red bubbles for information about date, difficulty and availability. A click on the bubble will display the link to the detailed tour information below:", 
                     style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}
@@ -194,7 +195,6 @@ app.layout = html.Div([
 # Output of Graph
 @app.callback(Output('graph', 'figure'),
               [Input('tour_lenght_name', 'value')
-
               ])
 
 def update_figure(chosen_lenght):
@@ -295,5 +295,3 @@ def display_click_data(clickData):
 
 if __name__ == '__main__':
     app.run_server()  # Turn off reloader if inside Jupyter
-
-

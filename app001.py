@@ -136,7 +136,7 @@ df_table["Availability"] = availability
 print(df_table)
 
 app = dash.Dash(__name__)
-
+server = app.server
 
 blackbold={'color':'black', 'font-weight': 'bold', "font-family":"New Panam Skyline"}
 

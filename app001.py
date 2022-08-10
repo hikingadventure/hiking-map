@@ -137,6 +137,7 @@ background_color = '#E4FFC9'
 
 app.layout = html.Div([
     dbc.Row([
+    dcc.Loading(
 
     dbc.Col(children=[
             
@@ -155,7 +156,8 @@ app.layout = html.Div([
 
         ])
 
-    ],width=8)
+    ])
+    )
 
 ]),
     dbc.Row([
@@ -273,8 +275,8 @@ def update_figure(chosen_lenght):
         l=30,
         r=30,
         b=30,
-        t=80,
-        pad=4
+        t=30,
+        #pad=4
     ),
         )
     }

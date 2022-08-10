@@ -133,7 +133,10 @@ df_table["Availability"] = availability
 
 print(df_table)
 
-app = dash.Dash(__name__)
+app = dash.Dash(__name__,
+meta_tags=[{'name': 'viewport',
+                            'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5,'}]
+)
 server = app.server
 
 blackbold={'color':'black', 'font-weight': 'bold', "font-family":"New Panam Skyline"}
@@ -147,11 +150,12 @@ app.layout = html.Div([
     dbc.Col(children=[
             
         dbc.Row([ 
-                
+            dcc.Loading(    
             html.Div([
                 dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True})
 
-            ])      
+            ]),
+            type="circle")   
 
         ])
 
@@ -164,7 +168,7 @@ app.layout = html.Div([
         dbc.Row([
 
             html.Div([
-                html.Label(children=['Bitte auswählen. '], style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}),
+                html.Label(children=['Bitte wählen Sie aus: '], style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}),
                 dcc.Checklist(id='tour_lenght_name',
                         options=[{'label':str(b),'value':b} for b in sorted(df_table['Tour_Length'].unique())],
                         value=[b for b in sorted(df_table['Tour_Length'].unique())],
@@ -250,7 +254,7 @@ def update_figure(chosen_lenght):
             width=1430, 
             height=600,
             mapbox=dict(
-            center=go.layout.mapbox.Center(lat=47, lon=9),
+            center=go.layout.mapbox.Center(lat=47, lon=10),
             zoom=8),
             margin=dict(
         l=40,

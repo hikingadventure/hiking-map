@@ -18,8 +18,8 @@ import base64
 import json
 
 #connecting to WordPress database
-api_url = 'https://wander-erlebnis.ch/wp-json/wp/v2/programm'
-while True: 
+while True:
+    api_url = 'https://wander-erlebnis.ch/wp-json/wp/v2/programm' 
     response = requests.get(api_url, 'lxml')
     response_list = json.loads(response.text)
 
@@ -46,7 +46,7 @@ while True:
     list_difficulty = []
 
     for i in list_id_numbers:
-    
+
         output_dict = [x for x in response_list if x['id'] == i]
         #tour_name.append(i)
         max_number_of_people = [sub['anzahl_teilnehmende'] for sub in output_dict ]
@@ -124,180 +124,179 @@ while True:
     for i in range(len(df_table)):
         if df_table["Booked"][i] == df_table["max_num_people"][i]:
             availability.append("ausgebucht")
-            #print("fully booked")
+    #print("fully booked")
         else:
             availability.append("plätze verfügbar")
-            #print("places available")
+        #print("places available")
 
     df_table["Availability"] = availability
 
-
-
     print(df_table)
-    time.sleep(60*60*24)
 
-app = dash.Dash(__name__,
-meta_tags=[{'name': 'viewport',
-                            'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5,'}]
-)
-server = app.server
 
-blackbold={'color':'black', 'font-weight': 'bold', "font-family":"New Panam Skyline"}
+    app = dash.Dash(__name__,
+    meta_tags=[{'name': 'viewport',
+                                'content': 'width=device-width, initial-scale=1.0, maximum-scale=1.2, minimum-scale=0.5,'}]
+    )
+    server = app.server
 
-background_color = '#E4FFC9'
-#style={"font-family": "Burnest Rough Regular"}
+    blackbold={'color':'black', 'font-weight': 'bold', "font-family":"New Panam Skyline"}
 
-app.layout = html.Div([
-    dbc.Row([
+    background_color = '#E4FFC9'
+    #style={"font-family": "Burnest Rough Regular"}
 
-    dbc.Col(children=[
-            
-        dbc.Row([ 
-            dcc.Loading(    
-            html.Div([
-                dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True})
+    app.layout = html.Div([
+        dbc.Row([
+
+        dbc.Col(children=[
+                
+            dbc.Row([ 
+                dcc.Loading(    
+                html.Div([
+                    dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True})
+
+                ]),
+                type="circle")   
+
+            ])
+
+        ])
+
+    ]),
+        dbc.Row([
+
+        dbc.Col(children=[
+            dbc.Row([
+
+                html.Div([
+                    html.Label(children=['Bitte wählen Sie aus: '], style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}),
+                    dcc.Checklist(id='tour_lenght_name',
+                            options=[{'label':str(b),'value':b} for b in sorted(df_table['Tour_Length'].unique())],
+                            value=[b for b in sorted(df_table['Tour_Length'].unique())],
+                            #label_checked_style={"color": "red"},
+                            className='my_box_container',
+
+                            style={'color': '#7C7672', "backgroundColor":'#E4FFC9', "font-family": "Arial", 'padding-bottom':'20px'}
+                            ),
+                    html.P("Erklärung: Informationen zu Datum, Schwierigkeit und Verfügbarkeit erhalten Sie, wenn Sie mit der Maus über die roten Punkte fahren. Beim Klick auf einen Punkt erscheint der Link zum Detailprogramm hier unten.", 
+                        style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}
+                        ),
+                    html.Pre(id='web_link', children=[],
+                        #'height':'100vh'
+                        #style={'padding-bottom':'20px','padding-left':'20px', "backgroundColor":'#E4FFC9'}
+                        )
+                ],
+                style={'color': '#7C7672', 'fontSize': 14, "backgroundColor":'#E4FFC9', 'padding-left':'40px'}
+                )   
 
             ]),
-            type="circle")   
 
         ])
 
     ])
 
-]),
-    dbc.Row([
-
-    dbc.Col(children=[
-        dbc.Row([
-
-            html.Div([
-                html.Label(children=['Bitte wählen Sie aus: '], style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}),
-                dcc.Checklist(id='tour_lenght_name',
-                        options=[{'label':str(b),'value':b} for b in sorted(df_table['Tour_Length'].unique())],
-                        value=[b for b in sorted(df_table['Tour_Length'].unique())],
-                        #label_checked_style={"color": "red"},
-                        className='my_box_container',
-
-                        style={'color': '#7C7672', "backgroundColor":'#E4FFC9', "font-family": "Arial", 'padding-bottom':'20px'}
-                        ),
-                html.P("Erklärung: Informationen zu Datum, Schwierigkeit und Verfügbarkeit erhalten Sie, wenn Sie mit der Maus über die roten Punkte fahren. Beim Klick auf einen Punkt erscheint der Link zum Detailprogramm hier unten.", 
-                    style={"backgroundColor":'#E4FFC9', "font-family": "Arial", 'fontSize': "1.725em"}
-                    ),
-                html.Pre(id='web_link', children=[],
-                    #'height':'100vh'
-                    #style={'padding-bottom':'20px','padding-left':'20px', "backgroundColor":'#E4FFC9'}
-                    )
-            ],
-            style={'color': '#7C7672', 'fontSize': 14, "backgroundColor":'#E4FFC9', 'padding-left':'40px'}
-            )   
-
-        ]),
-
     ])
 
-])
-
-])
 
 
+    # Output of Graph
+    @app.callback(Output('graph', 'figure'),
+                [Input('tour_lenght_name', 'value')
 
-# Output of Graph
-@app.callback(Output('graph', 'figure'),
-              [Input('tour_lenght_name', 'value')
+                ])
 
-              ])
+    def update_figure(chosen_lenght):
+        
+        df_sub = df_table[(df_table['Tour_Length'].isin(chosen_lenght))]
+        
+        #df_sub = df_table[(df_table['Tour_Length'].isin(chosen_lenght)) &
+        #            (df_table['Date'].isin(chiden_day))]
 
-def update_figure(chosen_lenght):
-    
-    df_sub = df_table[(df_table['Tour_Length'].isin(chosen_lenght))]
-    
-    #df_sub = df_table[(df_table['Tour_Length'].isin(chosen_lenght)) &
-    #            (df_table['Date'].isin(chiden_day))]
+        
 
-    
+        # Create figure
+        locations=[
+        go.Scattermapbox(
+            lat=df_sub['breitengrad'],
+            lon=df_sub['laengengrad'],
+            mode='markers',
+            #hovertext=df_sub["Tour"],
 
-    # Create figure
-    locations=[
-    go.Scattermapbox(
-        lat=df_sub['breitengrad'],
-        lon=df_sub['laengengrad'],
-        mode='markers',
-        #hovertext=df_sub["Tour"],
+            #text=[df_sub['Tour'][i] + '</b><br><br>' + df_sub['Date'][i] for i in range(df_sub.shape[0])],
+            text=df_sub['Tour'] + '</b><br>' + df_sub['Date'] + '</b><br>' + df_sub["difficulty_lvl"] + '</b><br>' + df_sub['Availability'],
+            #hoverinfo='text',
+            hovertemplate = "<b>%{text}</b>" + "<extra></extra>",
+            marker=go.scattermapbox.Marker(
+                color="red",
+                size = 20,
+                #showscale=True,
+                #colorbar={'title':'Meters up', 'titleside':'top', 'thickness':4, 'ticksuffix':' m'},
+            ),
+            unselected={'marker': {'opacity': 0.8}},
+            selected={'marker': {'opacity': 0.5, 'size': 18}},
+            customdata=df_sub['link']
 
-        #text=[df_sub['Tour'][i] + '</b><br><br>' + df_sub['Date'][i] for i in range(df_sub.shape[0])],
-        text=df_sub['Tour'] + '</b><br>' + df_sub['Date'] + '</b><br>' + df_sub["difficulty_lvl"] + '</b><br>' + df_sub['Availability'],
-        #hoverinfo='text',
-        hovertemplate = "<b>%{text}</b>" + "<extra></extra>",
-        marker=go.scattermapbox.Marker(
-            color="red",
-            size = 20,
-            #showscale=True,
-            #colorbar={'title':'Meters up', 'titleside':'top', 'thickness':4, 'ticksuffix':' m'},
+        
+    )]
+
+
+
+        return {
+                'data': locations,
+                'layout': go.Layout(
+                uirevision= 'foo', #preserves state of figure/map after callback activated
+                clickmode= 'event+select',
+                hovermode='closest',
+                plot_bgcolor=background_color,
+                paper_bgcolor=background_color,
+                hoverdistance=2,
+                #title=dict(text="UPCOMING HIKES",font=dict(family="Burnest Rough Regular",size=35, color='#7C7672')),
+                mapbox_style="open-street-map",
+                width=1430, 
+                height=600,
+                mapbox=dict(
+                center=go.layout.mapbox.Center(lat=47, lon=10),
+                zoom=6),
+                margin=dict(
+            l=40,
+            r=40,
+            b=40,
+            t=40,
+            #pad=4
         ),
-        unselected={'marker': {'opacity': 0.8}},
-        selected={'marker': {'opacity': 0.5, 'size': 18}},
-        customdata=df_sub['link']
-
-    
-)]
-
-
-
-    return {
-            'data': locations,
-            'layout': go.Layout(
-            uirevision= 'foo', #preserves state of figure/map after callback activated
-            clickmode= 'event+select',
-            hovermode='closest',
-            plot_bgcolor=background_color,
-            paper_bgcolor=background_color,
-            hoverdistance=2,
-            #title=dict(text="UPCOMING HIKES",font=dict(family="Burnest Rough Regular",size=35, color='#7C7672')),
-            mapbox_style="open-street-map",
-            width=1430, 
-            height=600,
-            mapbox=dict(
-            center=go.layout.mapbox.Center(lat=47, lon=10),
-            zoom=6),
-            margin=dict(
-        l=40,
-        r=40,
-        b=40,
-        t=40,
-        #pad=4
-    ),
-        )
-    }
+            )
+        }
 
 
 
 
 
-# callback for Web_link
-@app.callback(
-    Output('web_link', 'children'),
-    [Input('graph', 'clickData')])
-def display_click_data(clickData):
+    # callback for Web_link
+    @app.callback(
+        Output('web_link', 'children'),
+        [Input('graph', 'clickData')])
+    def display_click_data(clickData):
 
-    if clickData is None:
-        #return 'Tour program, linked'
-        return
-    else:
-        # print (clickData)
-        the_link = clickData['points'][0]['customdata']
-        name = clickData['points'][0]['text']
-        button_name = name.split("<",1)[0]
-        if the_link is None:
-            return 'No Website Available'
+        if clickData is None:
+            #return 'Tour program, linked'
+            return
         else:
-            #return html.A(the_link, href=the_link, target="_blank")
-            #for i in df_table['Tour']:
-            #    a = i
-                        
-            return html.A(dbc.Button(button_name, style={"color":"#7C7672", "backgroundColor":'red', 'fontSize': "1.725em"}), 
-                href=the_link, target="_blank")
+            # print (clickData)
+            the_link = clickData['points'][0]['customdata']
+            name = clickData['points'][0]['text']
+            button_name = name.split("<",1)[0]
+            if the_link is None:
+                return 'No Website Available'
+            else:
+                #return html.A(the_link, href=the_link, target="_blank")
+                #for i in df_table['Tour']:
+                #    a = i
+                            
+                return html.A(dbc.Button(button_name, style={"color":"#7C7672", "backgroundColor":'red', 'fontSize': "1.725em"}), 
+                    href=the_link, target="_blank")
 
 
 
-if __name__ == '__main__':
-    app.run_server()  # Turn off reloader if inside Jupyter
+    if __name__ == '__main__':
+        app.run_server()  # Turn off reloader if inside Jupyter
+    time.sleep(60*60*24)

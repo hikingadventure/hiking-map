@@ -124,7 +124,7 @@ for i in range(len(df_table)):
         availability.append("ausgebucht")
     #print("fully booked")
     else:
-        availability.append("plätze verfügbar")
+        availability.append("Plätze verfügbar")
     #print("places available")
 
 df_table["Availability"] = availability
@@ -152,7 +152,12 @@ app.layout = html.Div([
         dbc.Row([ 
             dcc.Loading(    
             html.Div([
-                dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True})
+                dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True}),
+                dcc.Interval(
+            id='interval-component',
+            interval=5*60*1000, # in milliseconds
+            n_intervals=0
+        )
 
             ]),
             type="circle")   
@@ -200,11 +205,12 @@ app.layout = html.Div([
 
 # Output of Graph
 @app.callback(Output('graph', 'figure'),
-              [Input('tour_lenght_name', 'value')
+              [Input('tour_lenght_name', 'value'),
+              Input('interval-component', 'n_intervals')
 
               ])
 
-def update_figure(chosen_lenght):
+def update_figure(chosen_lenght, n):
     
     df_sub = df_table[(df_table['Tour_Length'].isin(chosen_lenght))]
     

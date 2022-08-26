@@ -158,7 +158,7 @@ cache = Cache(app.server, config={
     'CACHE_DIR': 'cache-directory'
 })
 
-TIMEOUT = 60
+TIMEOUT = 3600
 
 server = app.server
 
@@ -178,7 +178,7 @@ app.layout = html.Div([
                 dcc.Graph(id='graph', config={'displayModeBar': False, 'scrollZoom': True}),
                 dcc.Interval(
             id='interval-component',
-            interval=15*60*1000, # in milliseconds
+            interval=60*60*1000, # in milliseconds
             n_intervals=0
         )
 

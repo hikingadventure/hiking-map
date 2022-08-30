@@ -181,7 +181,7 @@ app.layout = html.Div([
             interval=60*60*1000, # in milliseconds
             n_intervals=0
         )
-
+ 
             ]),
             type="circle")   
 
@@ -241,19 +241,36 @@ app.layout = html.Div([
 
 
 
-# Output of Graph
-@app.callback(Output('graph', 'figure'),
+# Output of dataset
+@app.callback(Output('dataset', 'children'),
               [
-              Input('tour_lenght_name', 'value'),
-              Input('tour_difficulty', 'value'),
               Input('interval-component', 'n_intervals')
               ])
 
-
 @cache.memoize(timeout=TIMEOUT)
-def update_figure(chosen_lenght, chosen_difficulty, n):
+def update_data(n):
 
     df_table = my_table()
+    print("the secont df table")
+    print(df_table)
+
+    df_to_dict = df_table.to_dict('dict')
+
+    return df_to_dict
+
+
+# Output of Graph
+@app.callback(Output('graph', 'figure'),
+              [
+              Input('dataset', 'children'),
+              Input('tour_lenght_name', 'value'),
+              Input('tour_difficulty', 'value'),
+              ])
+
+
+def update_figure(d, chosen_lenght, chosen_difficulty):
+
+    df_table = pd.DataFrame.from_dict(d)
     
     #df_sub = df_table[(df_table['Tour_Length'].isin(chosen_lenght))]
     
